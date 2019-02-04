@@ -1,25 +1,25 @@
 
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 get_ipython().system('pip install --upgrade pip')
 
 
-# In[4]:
+# In[2]:
 
 
 get_ipython().system('pip install imblearn')
 
 
-# In[5]:
+# In[3]:
 
 
 get_ipython().system('pip install scikit-learn')
 
 
-# In[8]:
+# In[4]:
 
 
 import pandas as pd
@@ -29,49 +29,49 @@ import matplotlib as plot
 from imblearn.over_sampling import SMOTE
 
 
-# In[46]:
+# In[5]:
 
 
 churn_data = pd.read_csv("/Users/nissani/Desktop/WA_Fn_UseC_Telco_Customer_Churn.csv")
 
 
-# In[47]:
+# In[6]:
 
 
 churn_data.head()
 
 
-# In[99]:
+# In[7]:
 
 
 list(churn_data)
 
 
-# In[100]:
+# In[8]:
 
 
 column_headers = np.array(list(churn_data))[1:-1]
 
 
-# In[101]:
+# In[9]:
 
 
 column_headers
 
 
-# In[48]:
+# In[10]:
 
 
 workable_data = churn_data.values
 
 
-# In[49]:
+# In[11]:
 
 
 workable_data
 
 
-# In[50]:
+# In[12]:
 
 
 for i in range(len(workable_data)):
@@ -108,67 +108,67 @@ for i in range(len(workable_data)):
             workable_data[i][j] = 3
 
 
-# In[51]:
+# In[13]:
 
 
 workable_data
 
 
-# In[52]:
+# In[14]:
 
 
 churn_data_new = pd.DataFrame(workable_data)
 
 
-# In[53]:
+# In[15]:
 
 
 churn_data['Churn'].value_counts().plot(kind = 'bar')
 
 
-# In[64]:
+# In[16]:
 
 
 labels = workable_data[:, -1]
 
 
-# In[74]:
+# In[17]:
 
 
 labels = list(labels)
 
 
-# In[75]:
+# In[18]:
 
 
 labels
 
 
-# In[66]:
+# In[19]:
 
 
 customer_id = workable_data[:, 0]
 
 
-# In[67]:
+# In[20]:
 
 
 customer_id
 
 
-# In[68]:
+# In[21]:
 
 
 workable_data = workable_data[:, 1:-1]
 
 
-# In[69]:
+# In[22]:
 
 
 workable_data
 
 
-# In[70]:
+# In[23]:
 
 
 for i in range(len(workable_data)):
@@ -178,69 +178,87 @@ for i in range(len(workable_data)):
         workable_data[i] = workable_data[i].astype(np.float)
 
 
-# In[71]:
+# In[24]:
 
 
 workable_data
 
 
-# In[72]:
+# In[25]:
 
 
 sm = SMOTE(random_state = 28)
 
 
-# In[86]:
+# In[26]:
 
 
 new_data, new_labels = sm.fit_resample(workable_data, labels)
 
 
-# In[80]:
+# In[27]:
 
 
 len(new_data)
 
 
-# In[79]:
+# In[28]:
 
 
 from collections import Counter
 Counter(new_labels)
 
 
-# In[87]:
+# In[29]:
 
 
 new_data -= np.mean(new_data)
 
 
-# In[89]:
+# In[30]:
 
 
 new_data = new_data/(np.std(new_data))**2
 
 
-# In[90]:
+# In[31]:
 
 
 new_data
 
 
-# In[105]:
+# In[32]:
 
 
 printable_data = pd.DataFrame(new_data, columns = list(column_headers))
 
 
-# In[106]:
+# In[33]:
+
+
+printable_labels = pd.DataFrame(new_labels, columns = ["Churn"])
+
+
+# In[34]:
 
 
 printable_data
 
 
-# In[107]:
+# In[35]:
 
 
-printable_data.to_csv("/Users/nissani/Desktop/Preprocessed.csv")
+printable_labels
+
+
+# In[36]:
+
+
+final_data = pd.concat([printable_labels, printable_data], axis = 1)
+
+
+# In[37]:
+
+
+final_data.to_csv("/Users/nissani/Desktop/Preprocessed.csv")
 
