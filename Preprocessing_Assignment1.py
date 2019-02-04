@@ -168,7 +168,7 @@ workable_data = workable_data[:, 1:-1]
 workable_data
 
 
-# In[23]:
+# In[24]:
 
 
 for i in range(len(workable_data)):
@@ -178,86 +178,94 @@ for i in range(len(workable_data)):
         workable_data[i] = workable_data[i].astype(np.float)
 
 
-# In[24]:
+# In[27]:
+
+
+for i in range(len(workable_data)):
+    if workable_data[i, -1] == 0:
+        workable_data[i, -1] == sum(workable_data[-1].T)/len(workable_data[-1].T)
+
+
+# In[28]:
 
 
 workable_data
 
 
-# In[25]:
+# In[29]:
 
 
 sm = SMOTE(random_state = 28)
 
 
-# In[26]:
+# In[30]:
 
 
 new_data, new_labels = sm.fit_resample(workable_data, labels)
 
 
-# In[27]:
+# In[31]:
 
 
 len(new_data)
 
 
-# In[28]:
+# In[32]:
 
 
 from collections import Counter
 Counter(new_labels)
 
 
-# In[29]:
+# In[33]:
 
 
 new_data -= np.mean(new_data)
 
 
-# In[30]:
+# In[34]:
 
 
 new_data = new_data/(np.std(new_data))**2
 
 
-# In[31]:
+# In[35]:
 
 
 new_data
 
 
-# In[32]:
+# In[36]:
 
 
 printable_data = pd.DataFrame(new_data, columns = list(column_headers))
 
 
-# In[33]:
+# In[37]:
 
 
 printable_labels = pd.DataFrame(new_labels, columns = ["Churn"])
 
 
-# In[34]:
+# In[38]:
 
 
 printable_data
 
 
-# In[35]:
+# In[39]:
 
 
 printable_labels
 
 
-# In[36]:
+# In[40]:
 
 
 final_data = pd.concat([printable_labels, printable_data], axis = 1)
 
 
-# In[37]:
+# In[41]:
 
 
 final_data.to_csv("/Users/nissani/Desktop/Preprocessed.csv")
